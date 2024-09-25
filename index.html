@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha seus sabores de pizza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .pizza-flavors {
+            list-style-type: none;
+            padding: 0;
+        }
+        .pizza-flavors li {
+            margin: 5px 0;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Escolha seus sabores de pizza</h1>
+    <ul class="pizza-flavors">
+        <li><input type="checkbox" id="mussarela" value="Mussarela"> Mussarela</li>
+        <li><input type="checkbox" id="calabresa" value="Calabresa"> Calabresa</li>
+        <li><input type="checkbox" id="portuguesa" value="Portuguesa"> Portuguesa</li>
+        <li><input type="checkbox" id="frango-catupiry" value="Frango com Catupiry"> Frango com Catupiry</li>
+        <li><input type="checkbox" id="quatro-queijos" value="Quatro Queijos"> Quatro Queijos</li>
+    </ul>
+    <button onclick="enviarParaWhatsApp()">Enviar para o WhatsApp</button>
+</div>
+
+<script>
+// Função para pegar o valor do parâmetro "telefone" na URL
+function getNumeroTelefone() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('telefone');  // Retorna o valor do parâmetro "telefone"
+}
+
+function enviarParaWhatsApp() {
+    // Coleta os sabores de pizza selecionados
+    const saboresSelecionados = [];
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(item => {
+        saboresSelecionados.push(item.value);
+    });
+
+    // Verifica se algum sabor foi selecionado
+    if (saboresSelecionados.length === 0) {
+        alert('Por favor, selecione ao menos um sabor.');
+        return;
+    }
+
+    // Cria a mensagem com os sabores selecionados
+    const mensagem = `Escolhi os seguintes sabores de pizza: ${saboresSelecionados.join(', ')}`;
+
+    // Pega o número de telefone da URL
+    const numeroTelefone = getNumeroTelefone();
+
+    if (!numeroTelefone) {
+        alert('Número de telefone não fornecido na URL.');
+        return;
+    }
+
+    // Cria o link do WhatsApp com o número de telefone da URL
+    const linkWhatsApp = `https://wa.me/${numeroTelefone}?text=${encodeURIComponent(mensagem)}`;
+
+    // Redireciona para o WhatsApp
+    window.location.href = linkWhatsApp;
+}
+</script>
+
+</body>
+</html>
